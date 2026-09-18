@@ -1,8 +1,9 @@
-import Hero from '../../components/features/Hero';
-import SportsGrid from '../../components/features/SportsGrid';
+import Hero from '../../components/features/Hero/Hero';
+import TeamGrid from '../../components/features/TeamGrid/TeamGrid';
 import CTABanner from '../../components/features/CTABanner';
-import NewsSection from '../../components/features/NewsSection';
+import NewsFeed from '../../components/features/NewsFeed/NewsFeed';
 import { useTeams } from '../../hooks/useTeams';
+import LiveMatchesStrip from '../../components/features/LiveMatchesStrip/LiveMatchesStrip';
 
 function HomePage() {
   const { data: teams, isLoading } = useTeams();
@@ -12,9 +13,10 @@ function HomePage() {
   return (
     <>
       <Hero />
-      <SportsGrid teams={teams} />
+      <LiveMatchesStrip />
+      <TeamGrid teams={teams} />
       <CTABanner />
-      <NewsSection />
+      <NewsFeed />
     </>
   );
 }

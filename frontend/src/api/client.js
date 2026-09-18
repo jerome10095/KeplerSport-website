@@ -1,21 +1,25 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 const apiClient = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: import.meta.env.VITE_API_URL,
+  headers: { 'Content-Type': 'application/json' },
+  timeout: 15000,
 });
 
-// Add response interceptor for error handling
 apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    console.error('API Error:', error);
-    return Promise.reject(error);
+  (res) => res,
+  (err) => {
+    const url = err.config?.url;
+    const status = err.response?.status;
+    console.error(`[API ERROR] ${status} ${url}`, err.response?.data || err.message);
+    return Promise.reject(err);
   }
 );
+
+export const mediaUrl = (path) => {
+  if (!path) return null;
+  if (path.startsWith('http')) return path;
+  return `${import.meta.env.VITE_STRAPI_URL}${path}`;
+};
 
 export default apiClient;

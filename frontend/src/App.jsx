@@ -1,23 +1,31 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from './components/common/Layout';
-import HomePage from './pages/HomePage';
-import TeamsPage from './pages/TeamsPage';
-import SchedulePage from './pages/SchedulePage';
-import NewsPage from './pages/NewsPage';
+import { Routes, Route } from 'react-router-dom';
+import Layout from './components/common/Layout/Layout';
+import HomePage from './pages/HomePage/HomePage';
+import TeamsPage from './pages/TeamsPage/TeamsPage';
+import TeamDetailPage from './pages/TeamDetailPage/TeamDetailPage';
+import SchedulePage from './pages/SchedulePage/SchedulePage';
+import MatchDetailPage from './pages/MatchDetailPage/MatchDetailPage';
+import NewsListPage from './pages/NewsListPage/NewsListPage';
+import NewsDetailPage from './pages/NewsDetailPage/NewsDetailPage';
+import StandingsPage from './pages/StandingsPage/StandingsPage';
+import FacilitiesPage from './pages/FacilitiesPage/FacilitiesPage';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 
-function App() {
+export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route path="teams" element={<TeamsPage />} />
-          <Route path="schedule" element={<SchedulePage />} />
-          <Route path="news" element={<NewsPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="teams" element={<TeamsPage />} />
+        <Route path="teams/:slug" element={<TeamDetailPage />} />
+        <Route path="schedule" element={<SchedulePage />} />
+        <Route path="matches/:id" element={<MatchDetailPage />} />
+        <Route path="news" element={<NewsListPage />} />
+        <Route path="news/:slug" element={<NewsDetailPage />} />
+        <Route path="standings" element={<StandingsPage />} />
+        <Route path="facilities" element={<FacilitiesPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
   );
 }
-
-export default App;

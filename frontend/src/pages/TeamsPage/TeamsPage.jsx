@@ -1,9 +1,10 @@
-function TeamsPage() {
+import Section from '../../components/ui/Section';
+import SportsGrid from '../../components/features/SportsGrid';
+
+export default function TeamsPage() {
   return (
-    <section>
-      <h1>Teams</h1>
-    </section>
+    <Section title="Teams" subtitle="All Kepler Sports teams">
+      <SportsGrid />
+    </Section>
   );
 }
-
-export default TeamsPage;

@@ -1,22 +1,30 @@
-function SportsGrid({ teams = [] }) {
-  if (teams.length === 0) {
-    return (
-      <section className="sports-grid">
-        <p>No teams to show yet.</p>
-      </section>
-    );
-  }
+import { Link } from 'react-router-dom';
+import { useTeams } from '../../hooks/useTeams';
+import { mediaUrl } from '../../api/client';
+import Loader from '../common/Loader/Loader';
+import EmptyState from '../common/EmptyState/EmptyState';
+
+export default function SportsGrid({ limit }) {
+  const { data, isLoading, isError } = useTeams();
+
+  if (isLoading) return <Loader text="Loading teams…" />;
+  if (isError) return <EmptyState title="Couldn't load teams" />;
+  if (!data || data.length === 0) return <EmptyState title="No teams yet" message="Teams will appear once added in the admin panel." />;
+
+  const teams = limit ? data.slice(0, limit) : data;
 
   return (
-    <section className="sports-grid">
-      {teams.map((team) => (
-        <article key={team.id ?? team.slug} className="sports-grid-card">
-          <h3>{team.name}</h3>
-          <p>{team.sport}</p>
-        </article>
-      ))}
-    </section>
+    <div className="sports-grid">
+      {teams.map((t) => {
+        const logo = mediaUrl(t.logo?.url);
+        return (
+          <Link key={t.id} to={`/teams/${t.slug}`} className="sport-card">
+            {logo && <img src={logo} alt={t.name} />}
+            <h3>{t.name}</h3>
+            <span className="sport-card__sport">{t.sport}</span>
+          </Link>
+        );
+      })}
+    </div>
   );
 }
-
-export default SportsGrid;

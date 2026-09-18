@@ -1,10 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
-import { teamsService } from '../api/services/teams';
+import { teamsApi } from '../api/queries/teams.queries';
 
 export function useTeams() {
   return useQuery({
     queryKey: ['teams'],
-    queryFn: () => teamsService.getAll().then((res) => res.data),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    queryFn: async () => {
+      const { data } = await teamsApi.getAll();
+      return data.data;
+    },
+  });
+}
+
+export function useTeam(slug) {
+  return useQuery({
+    queryKey: ['team', slug],
+    queryFn: async () => {
+      const { data } = await teamsApi.getBySlug(slug);
+      return data.data;
+    },
+    enabled: !!slug,
   });
 }
