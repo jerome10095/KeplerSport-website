@@ -8,7 +8,7 @@ export function useLiveMatches() {
     queryKey: ['matches', 'live'],
     queryFn: async () => {
       const { data } = await matchesApi.getLive();
-      return data.data;
+      return data?.data ?? data ?? [];
     },
     refetchInterval: 30_000,
   });
@@ -19,7 +19,7 @@ export function useUpcomingMatches() {
     queryKey: ['matches', 'upcoming'],
     queryFn: async () => {
       const { data } = await matchesApi.getUpcoming();
-      return data.data;
+      return data?.data ?? data ?? [];
     },
     refetchInterval: 60_000,
   });
@@ -30,7 +30,7 @@ export function useFeaturedMatch() {
     queryKey: ['matches', 'featured'],
     queryFn: async () => {
       const { data } = await matchesApi.getFeatured();
-      return data.data;
+      return data?.data ?? data ?? null;
     },
   });
 }
@@ -50,7 +50,7 @@ export function useMatch(id) {
     queryKey: ['match', id],
     queryFn: async () => {
       const { data } = await matchesApi.getById(id);
-      return data.data;
+      return data?.data ?? data ?? null;
     },
     enabled: !!id,
   });

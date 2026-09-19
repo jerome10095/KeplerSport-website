@@ -6,7 +6,7 @@ export function useGlobal() {
     queryKey: ['global'],
     queryFn: async () => {
       const { data } = await apiClient.get('/global');
-      return data.data;
+      return data?.data ?? data ?? {};
     },
     staleTime: 5 * 60_000,
   });

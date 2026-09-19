@@ -3,9 +3,16 @@ import { useAnnouncements } from '../../../hooks/useAnnouncements';
 export default function LiveTicker() {
   const { data: items, isLoading } = useAnnouncements();
 
-  if (isLoading || !items || items.length === 0) return null;
+  const announcements = Array.isArray(items)
+    ? items
+    : Array.isArray(items?.data)
+      ? items.data
+      : [];
 
-  const text = items.map((i) => i.message).join('  •  ');
+  if (isLoading || announcements.length === 0) return null;
+
+  const text = announcements.map((item) => item.message ?? item.title ?? '').filter(Boolean).join('  •  ');
+  if (!text) return null;
 
   return (
     <div className="ticker">

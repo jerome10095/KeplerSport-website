@@ -5,17 +5,20 @@ import { BrowserRouter } from 'react-router-dom'
 import './styles/index.css'
 import App from './App.jsx'
 import { SocketProvider } from './context/SocketContext.jsx'
+import ErrorBoundary from './components/common/ErrorBoundary/ErrorBoundary.jsx'
 
 const queryClient = new QueryClient()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <SocketProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </SocketProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <SocketProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </SocketProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   </StrictMode>,
 )

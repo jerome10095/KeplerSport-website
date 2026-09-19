@@ -9,13 +9,14 @@ export default function SportsGrid({ limit }) {
 
   if (isLoading) return <Loader text="Loading teams…" />;
   if (isError) return <EmptyState title="Couldn't load teams" />;
-  if (!data || data.length === 0) return <EmptyState title="No teams yet" message="Teams will appear once added in the admin panel." />;
+  const teams = Array.isArray(data) ? data : [];
+  if (teams.length === 0) return <EmptyState title="No teams yet" message="Teams will appear once added in the admin panel." />;
 
-  const teams = limit ? data.slice(0, limit) : data;
+  const visibleTeams = limit ? teams.slice(0, limit) : teams;
 
   return (
     <div className="sports-grid">
-      {teams.map((t) => {
+      {visibleTeams.map((t) => {
         const logo = mediaUrl(t.logo?.url);
         return (
           <Link key={t.id} to={`/teams/${t.slug}`} className="sport-card">

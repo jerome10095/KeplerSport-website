@@ -6,6 +6,8 @@ export function SocketProvider({ children }) {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
+    if (!socket) return undefined;
+
     socket.connect();
 
     const onConnect = () => setIsConnected(true);

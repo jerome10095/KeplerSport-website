@@ -10,6 +10,7 @@ import NewsDetailPage from './pages/NewsDetailPage/NewsDetailPage';
 import StandingsPage from './pages/StandingsPage/StandingsPage';
 import FacilitiesPage from './pages/FacilitiesPage/FacilitiesPage';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import HighlightsPage from './pages/HighlightsPage/HighlightsPage';
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="news/:slug" element={<NewsDetailPage />} />
         <Route path="standings" element={<StandingsPage />} />
         <Route path="facilities" element={<FacilitiesPage />} />
+        <Route path="highlights" element={<HighlightsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

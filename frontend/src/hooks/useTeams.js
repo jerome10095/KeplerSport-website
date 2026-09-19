@@ -6,9 +6,15 @@ export function useTeams() {
     queryKey: ['teams'],
     queryFn: async () => {
       const { data } = await teamsApi.getAll();
-      return data.data;
+      return toCollection(data);
     },
   });
+}
+
+function toCollection(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.data)) return payload.data;
+  return [];
 }
 
 export function useTeam(slug) {
@@ -16,7 +22,7 @@ export function useTeam(slug) {
     queryKey: ['team', slug],
     queryFn: async () => {
       const { data } = await teamsApi.getBySlug(slug);
-      return data.data;
+      return data?.data ?? data ?? null;
     },
     enabled: !!slug,
   });

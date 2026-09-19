@@ -8,7 +8,7 @@ export function useNews(params = {}) {
     queryKey: ['news', params],
     queryFn: async () => {
       const { data } = await newsApi.getAll(params);
-      return data;
+      return data ?? [];
     },
   });
 }
@@ -18,7 +18,7 @@ export function useFeaturedNews() {
     queryKey: ['news', 'featured'],
     queryFn: async () => {
       const { data } = await newsApi.getFeatured();
-      return data.data;
+      return data?.data ?? data ?? [];
     },
   });
 }
@@ -28,7 +28,7 @@ export function useNewsItem(slug) {
     queryKey: ['news', slug],
     queryFn: async () => {
       const { data } = await newsApi.getBySlug(slug);
-      return data.data;
+      return data?.data ?? data ?? null;
     },
     enabled: !!slug,
   });

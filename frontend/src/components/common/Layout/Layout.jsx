@@ -5,6 +5,7 @@ import LiveTicker from '../../features/LiveTicker/LiveTicker';
 import { useAnnouncementsRealtimeSync } from '../../../hooks/useAnnouncements';
 import { useMatchRealtimeSync } from '../../../hooks/useLiveMatches';
 import { useNewsRealtimeSync } from '../../../hooks/useNews';
+import NotificationPrompt from '../../features/NotificationPrompt/NotificationPrompt';
 
 export default function Layout() {
   // Global realtime subscriptions
@@ -16,6 +17,7 @@ export default function Layout() {
     <>
       <Header />
       <LiveTicker />
+      <NotificationPrompt />
       <main style={{ minHeight: '70vh' }}>
         <Outlet />
       </main>

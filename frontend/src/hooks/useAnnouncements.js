@@ -8,7 +8,11 @@ export function useAnnouncements() {
     queryKey: ['announcements', 'active'],
     queryFn: async () => {
       const { data } = await announcementsApi.getActive();
-      return data.data;
+      return Array.isArray(data?.data)
+        ? data.data
+        : Array.isArray(data)
+          ? data
+          : [];
     },
     refetchInterval: 45_000,
   });
