@@ -4,15 +4,27 @@ export default function MatchTimeline({ match }) {
   const [events, setEvents] = useState([]);
   const home = match.home_score ?? match.homeScore ?? 0;
   const away = match.away_score ?? match.awayScore ?? 0;
+
   useEffect(() => {
-    setEvents((previous) => {
-      const last = previous[0];
-      if (!last) return [{ ts: Date.now(), home, away, period: match.period }];
-      if (last.home === home && last.away === away) return previous;
-      const homeDelta = home - last.home;
-      const awayDelta = away - last.away;
-      return [{ ts: Date.now(), home, away, period: match.period, event: homeDelta > 0 ? `+${homeDelta} ${match.home_team_name || match.homeTeam?.name || 'Home'}` : `+${awayDelta} ${match.away_team_name || match.awayTeam?.name || 'Away'}` }, ...previous].slice(0, 6);
-    });
+    function addEvent() {
+      setEvents((previous) => {
+        const last = previous[0];
+        if (last && last.home === home && last.away === away) return previous;
+        const entry = !last
+          ? { ts: Date.now(), home, away, period: match.period }
+          : {
+              ts: Date.now(),
+              home,
+              away,
+              period: match.period,
+              event: home - last.home > 0
+                ? `+${home - last.home} ${match.home_team_name || match.homeTeam?.name || 'Home'}`
+                : `+${away - last.away} ${match.away_team_name || match.awayTeam?.name || 'Away'}`,
+            };
+        return [entry, ...previous].slice(0, 6);
+      });
+    }
+    addEvent();
   }, [home, away, match.period, match.home_team_name, match.away_team_name, match.homeTeam, match.awayTeam]);
 
   if (!events.length) return null;

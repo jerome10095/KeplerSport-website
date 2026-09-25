@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { usePushNotifications } from '../../../hooks/usePushNotifications';
 
 const DISMISS_KEY = 'kepler_push_dismissed';
 
 export default function NotificationPrompt() {
   const { supported, subscribed, register } = usePushNotifications();
-  const [dismissed, setDismissed] = useState(false);
+  const [dismissed, setDismissed] = useState(() => localStorage.getItem(DISMISS_KEY) === 'true');
 
-  useEffect(() => setDismissed(localStorage.getItem(DISMISS_KEY) === 'true'), []);
   if (!supported || subscribed || dismissed) return null;
 
   async function enable() {

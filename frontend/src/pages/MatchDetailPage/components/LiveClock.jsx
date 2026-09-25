@@ -5,22 +5,20 @@ function formatMinute(minutes, seconds) {
 }
 
 export default function LiveClock({ minute = 0, status, updatedAt }) {
-  const [display, setDisplay] = useState(formatMinute(minute, 0));
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
-    if (status !== 'live') {
-      setDisplay(formatMinute(minute, 0));
-      return undefined;
-    }
-    const tick = () => {
-      const elapsed = updatedAt ? Math.max(0, Math.floor((Date.now() - new Date(updatedAt).getTime()) / 1000)) : 0;
-      const total = minute * 60 + elapsed;
-      setDisplay(formatMinute(Math.floor(total / 60), total % 60));
-    };
-    tick();
-    const timer = setInterval(tick, 1000);
+    if (status !== 'live') return undefined;
+    const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
-  }, [minute, status, updatedAt]);
+  }, [status]);
+
+  const display = (() => {
+    if (status !== 'live') return formatMinute(minute, 0);
+    const elapsed = updatedAt ? Math.max(0, Math.floor((now - new Date(updatedAt).getTime()) / 1000)) : 0;
+    const total = minute * 60 + elapsed;
+    return formatMinute(Math.floor(total / 60), total % 60);
+  })();
 
   return <span className="live-clock">{display}</span>;
 }
